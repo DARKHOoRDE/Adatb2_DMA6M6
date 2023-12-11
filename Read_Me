@@ -1,0 +1,32 @@
+A file elérési útvonalat csak full path-vel tudtam megoldani sajnos, azokat át kell írni.
+Ha ezeket lefuttatod külön, akkor normális meccsek jönnek létre, nincs benne kezelve, hogyan állhat össze a meccs, mert rosszul beadni nem lehetne, ha afelső programból jönne
+
+
+begin
+
+  pkg_match.fight(p_player1_id => 1,
+                  p_player2_id => 3,
+                  p_champ1_id  => 1,
+                  p_champ2_id  => 6);  
+                  
+
+
+   pkg_match.fight(p_player1_id => 1,
+                  p_player2_id => 2,
+                  p_champ1_id  => 2,
+                  p_champ2_id  => 4); 
+                  
+
+   pkg_match.fight(p_player1_id => 4,
+                  p_player2_id => 2,
+                  p_champ1_id  => 7,
+                  p_champ2_id  => 3);  
+                  
+
+  
+   pkg_match.fight(p_player1_id => 2,
+                   p_player2_id => 3,
+                   p_champ1_id  => 3,
+                   p_champ2_id  => 5);
+  
+end;
