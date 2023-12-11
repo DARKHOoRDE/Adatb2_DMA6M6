@@ -1,0 +1,18 @@
+Create or replace view vw_weapons_and_usage as
+SELECT w.id AS weapon_id
+      ,w.weapon_name
+      ,w.weapon_type
+      ,w.damage
+      ,w.damage_type
+      ,w.attack_speed
+      ,COUNT(c.id) AS count_of_users
+      ,listagg(c.charachter_name, ', ') within GROUP(ORDER BY c.charachter_name) AS champs_using
+  FROM weapon w
+  LEFT JOIN charachter c
+    ON w.id = c.weapon_id
+ GROUP BY w.id
+         ,w.weapon_name
+         ,w.weapon_type
+         ,w.damage
+         ,w.damage_type
+         ,w.attack_speed;

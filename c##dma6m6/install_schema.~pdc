@@ -1,0 +1,103 @@
+PROMPT Installing DB...
+
+--!cd D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6
+
+-- Install sequences
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/sequence/seq_charachter.sql
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/sequence/seq_player.sql
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/sequence/seq_weapon.sql
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/sequence/seq_match.sql
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/sequence/seq_playermatch.sql
+-- Install tables
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/table/charachter.sql
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/table/player.sql
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/table/weapon.sql
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/table/match_history.sql
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/table/player_match.sql
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/audit_table/player_h.sql
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/audit_table/charachter_h.sql
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/audit_table/weapon_h.sql
+
+-- Install types
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/type/ty_char_details.tps
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/type/ty_matches_of_player.tps
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/type/ty_matches_of_player_l.tps
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/type/ty_charachter_select.tps
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/type/ty_char_select_l.tps
+-- Packes
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/package/pkg_player.pck
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/package/pkg_charachter.pck
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/package/pkg_weapon.pck
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/package/pkg_match.pck
+-- Views
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/view/vw_player_charachter.sql
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/view/vw_weapons_and_usage.sql
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/view/vw_player_match_details.sql
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/view/vw_charachters_weapons.sql
+
+-- Triggers
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/trigger/player_b_trg.trg
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/trigger/charachter_b_trg.trg
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/trigger/weapon_b_trg.trg
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/trigger/match_b_trg.trg
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/trigger/playermatch_b_trg.trg
+-- Recompile schema
+BEGIN
+  dbms_utility.compile_schema(schema => 'C##DMA6M6');
+END;
+/
+
+-- FK
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/alter/alter_charachter.sql
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/alter/alter_player.sql
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/alter/alter_weapon.sql
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/alter/alter_match_history.sql
+@D:/PTE/5.felev/Adatb2/DMA6M6/c##dma6m6/alter/alter_playermatch.sql
+
+
+-- Tabla data
+
+INSERT INTO player(id,player_name,email,birth_date,creation_time,creator_user,mod_user,mod_time,dml_flag,version)
+VALUES(null,'Test Player','test@mail.com',to_date('21-09-2008', 'dd-mm-yyyy'),null,null,null,null,null,null);
+INSERT INTO player(id,player_name,email,birth_date,creation_time,creator_user,mod_user,mod_time,dml_flag,version)
+VALUES(null,'BBarack','bbarck@mail.com',to_date('05-09-1974', 'dd-mm-yyyy'),null,null,null,null,null,null);
+INSERT INTO player(id,player_name,email,birth_date,creation_time,creator_user,mod_user,mod_time,dml_flag,version)
+VALUES(null,'AVG user','avg@mail.com',to_date('01-01-2001', 'dd-mm-yyyy'),null,null,null,null,null,null);
+INSERT INTO player(id,player_name,email,birth_date,creation_time,creator_user,mod_user,mod_time,dml_flag,version)
+VALUES(null,'Last User','last@mail.com',to_date('22-12-2004', 'dd-mm-yyyy'),null,null,null,null,null,null);
+
+COMMIT;
+
+INSERT INTO weapon(id,weapon_name,weapon_type,damage,damage_type,attack_speed,creation_time,creator_user,mod_user,mod_time,dml_flag,version)
+VALUES(null,'Great Axe','Axe',31.2,'Physical',1.1,null,null,null,null,null,null);
+INSERT INTO weapon(id,weapon_name,weapon_type,damage,damage_type,attack_speed,creation_time,creator_user,mod_user,mod_time,dml_flag,version)
+VALUES(null,'Sharp Sword','Sword',27.6,'Physical',0.6,null,null,null,null,null,null);
+INSERT INTO weapon(id,weapon_name,weapon_type,damage,damage_type,attack_speed,creation_time,creator_user,mod_user,mod_time,dml_flag,version)
+VALUES(null,'Magic Staff','Staff',40.1,'Magic',1.3,null,null,null,null,null,null);
+INSERT INTO weapon(id,weapon_name,weapon_type,damage,damage_type,attack_speed,creation_time,creator_user,mod_user,mod_time,dml_flag,version)
+VALUES(null,'Piercing Bow','Bow',24.4,'Physical',0.4,null,null,null,null,null,null); 
+INSERT INTO weapon(id,weapon_name,weapon_type,damage,damage_type,attack_speed,creation_time,creator_user,mod_user,mod_time,dml_flag,version)
+VALUES(null,'Book of Flames','Magic Book',37.6,'Magic',1.1,null,null,null,null,null,null);
+INSERT INTO weapon(id,weapon_name,weapon_type,damage,damage_type,attack_speed,creation_time,creator_user,mod_user,mod_time,dml_flag,version)
+VALUES(null,'Crossbow','CrossBow',36.1,'Physical',1.2,null,null,null,null,null,null);
+
+COMMIT;
+
+INSERT INTO charachter(id,charachter_name,player_id,charachter_class,weapon_id,charachter_level,creation_time,creator_user,mod_user,mod_time,dml_flag,version)
+VALUES(null,'Magic Mike',1,'Wizard',3,1,null,null,null,null,null,null);
+INSERT INTO charachter(id,charachter_name,player_id,charachter_class,weapon_id,charachter_level,creation_time,creator_user,mod_user,mod_time,dml_flag,version)
+VALUES(null,'LeGGolas',1,'Archer',4,1,null,null,null,null,null,null);
+INSERT INTO charachter(id,charachter_name,player_id,charachter_class,weapon_id,charachter_level,creation_time,creator_user,mod_user,mod_time,dml_flag,version)
+VALUES(null,'LeonDidas',2,'Warrior',2,1,null,null,null,null,null,null);
+INSERT INTO charachter(id,charachter_name,player_id,charachter_class,weapon_id,charachter_level,creation_time,creator_user,mod_user,mod_time,dml_flag,version)
+VALUES(null,'GGandalFF',2,'Wizard',5,1,null,null,null,null,null,null);
+INSERT INTO charachter(id,charachter_name,player_id,charachter_class,weapon_id,charachter_level,creation_time,creator_user,mod_user,mod_time,dml_flag,version)
+VALUES(null,'Robin Hood',3,'Archer',4,1,null,null,null,null,null,null);
+INSERT INTO charachter(id,charachter_name,player_id,charachter_class,weapon_id,charachter_level,creation_time,creator_user,mod_user,mod_time,dml_flag,version)
+VALUES(null,'Shrek',3,'Warrior',1,1,null,null,null,null,null,null);
+INSERT INTO charachter(id,charachter_name,player_id,charachter_class,weapon_id,charachter_level,creation_time,creator_user,mod_user,mod_time,dml_flag,version)
+VALUES(null,'Frodo',4,'Warrior',2,1,null,null,null,null,null,null);
+
+COMMIT
+
+PROMPT Done.

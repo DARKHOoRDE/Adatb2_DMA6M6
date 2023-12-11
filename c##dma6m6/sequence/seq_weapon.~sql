@@ -1,0 +1,2 @@
+Create sequence seq_weapon start with 1;
+Create sequence seq_weapon_h start with 1;

@@ -1,0 +1,5 @@
+Create table match_history(
+    id number primary key,
+    winner_id number not null,
+    time_of_match date
+);

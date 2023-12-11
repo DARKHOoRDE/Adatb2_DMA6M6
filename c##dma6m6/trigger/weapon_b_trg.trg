@@ -1,0 +1,78 @@
+CREATE OR REPLACE TRIGGER weapon_b_trg
+  BEFORE INSERT OR UPDATE ON weapon
+  FOR EACH ROW
+BEGIN
+
+  :new.mod_user := sys_context('USERENV', 'OS_USER');
+  :new.mod_time := SYSDATE;
+  IF inserting
+  THEN
+    IF :new.id IS NULL
+    THEN
+      :new.id := seq_weapon.nextval;
+    END IF;
+    :new.creation_time := SYSDATE;
+    :new.creator_user  := sys_context('USERENV', 'OS_USER');
+    :new.version       := 1;
+    :new.dml_flag := 'I';
+    INSERT INTO weapon_h
+      (id
+      ,weapon_name
+      ,weapon_type
+      ,damage
+      ,damage_type
+      ,attack_speed
+      ,creation_time
+      ,creator_user
+      ,mod_user
+      ,mod_time
+      ,dml_flag
+      ,version)
+    VALUES
+      (:new.id
+      ,:new.weapon_name
+      ,:new.weapon_type
+      ,:new.damage
+      ,:new.damage_type
+      ,:new.attack_speed
+      ,:new.creation_time
+      ,:new.creator_user
+      ,sys_context('USERENV', 'OS_USER')
+      ,SYSDATE
+      ,'I'
+      ,1);
+  
+  ELSE
+    :new.version := :old.version + 1;
+    :new.dml_flag := 'U';
+    INSERT INTO weapon_h
+      (id
+      ,weapon_name
+      ,weapon_type
+      ,damage
+      ,damage_type
+      ,attack_speed
+      ,creation_time
+      ,creator_user
+      ,mod_user
+      ,mod_time
+      ,dml_flag
+      ,version)
+    VALUES
+      (:new.id
+      ,:new.weapon_name
+      ,:new.weapon_type
+      ,:new.damage
+      ,:new.damage_type
+      ,:new.attack_speed
+      ,:old.creation_time
+      ,:old.creator_user
+      ,sys_context('USERENV', 'OS_USER')
+      ,SYSDATE
+      ,'U'
+      ,:new.version);
+  
+  END IF;
+
+END;
+/

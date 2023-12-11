@@ -1,0 +1,2 @@
+CREATE Sequence seq_player start with 1;
+Create sequence seq_player_h start with 1;

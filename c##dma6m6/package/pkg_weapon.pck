@@ -1,0 +1,135 @@
+CREATE OR REPLACE PACKAGE pkg_weapon IS
+
+  gv_weapon_duplicate EXCEPTION;
+  PRAGMA EXCEPTION_INIT(gv_weapon_duplicate, -20002);
+  gv_zero_div EXCEPTION;
+  PRAGMA EXCEPTION_INIT(gv_zero_div, -20005);
+
+  PROCEDURE get_weapon_stat(p_details     IN OUT ty_char_details
+                           ,p_overall_dmg OUT NUMBER);
+
+  PROCEDURE update_weapon_stats(p_weapon_id    NUMBER
+                               ,p_damage       NUMBER DEFAULT NULL
+                               ,p_attack_speed NUMBER DEFAULT NULL);
+
+  PROCEDURE add_weapon(p_weapon_name  VARCHAR2
+                      ,p_weapon_type  VARCHAR2
+                      ,p_damage       NUMBER
+                      ,p_damage_type  VARCHAR2
+                      ,p_attack_speed NUMBER);
+
+END pkg_weapon;
+/
+CREATE OR REPLACE PACKAGE BODY pkg_weapon IS
+
+  PROCEDURE get_weapon_stat(p_details     IN OUT ty_char_details
+                           ,p_overall_dmg OUT NUMBER) IS
+    lv_dmg        NUMBER(3, 1);
+    lv_atck_speed NUMBER(2, 1);
+  BEGIN
+  
+    BEGIN
+      SELECT w.damage
+            ,w.attack_speed
+            ,w.weapon_name
+        INTO lv_dmg
+            ,lv_atck_speed
+            ,p_details.weapon_name
+        FROM weapon w
+       WHERE w.id = p_details.weapon_id;
+    
+      p_overall_dmg := floor(5 / lv_atck_speed) *
+                       (lv_dmg + p_details.char_lvl);
+    
+    EXCEPTION
+      WHEN zero_divide THEN
+        RAISE gv_zero_div;
+      
+    END;
+  END get_weapon_stat;
+
+  PROCEDURE update_weapon_stats(p_weapon_id    NUMBER
+                               ,p_damage       NUMBER DEFAULT NULL
+                               ,p_attack_speed NUMBER DEFAULT NULL) IS
+  
+    lv_updt_sql   VARCHAR2(4000);
+    lv_old_weapon weapon%ROWTYPE;
+  BEGIN
+  
+    SELECT * INTO lv_old_weapon FROM weapon w WHERE w.id = p_weapon_id;
+  
+    lv_updt_sql := 'UPDATE weapon w SET w.damage = :1,
+                                        w.attack_speed = :2
+                                    WHERE w.id = :3';
+  
+    IF p_damage IS NOT NULL
+    THEN
+      lv_old_weapon.damage := p_damage;
+    END IF;
+    IF p_attack_speed IS NOT NULL
+    THEN
+      lv_old_weapon.attack_speed := p_attack_speed;
+    END IF;
+  
+    EXECUTE IMMEDIATE lv_updt_sql
+      USING lv_old_weapon.damage, lv_old_weapon.attack_speed, p_weapon_id;
+  
+    COMMIT;
+  END update_weapon_stats;
+
+  PROCEDURE add_weapon(p_weapon_name  VARCHAR2
+                      ,p_weapon_type  VARCHAR2
+                      ,p_damage       NUMBER
+                      ,p_damage_type  VARCHAR2
+                      ,p_attack_speed NUMBER) IS
+  
+    lv_exists_id NUMBER;
+  
+  BEGIN
+  
+    BEGIN
+    
+      SELECT w.id
+        INTO lv_exists_id
+        FROM weapon w
+       WHERE upper(w.weapon_name) = upper(p_weapon_name);
+    
+      IF SQL%FOUND
+      THEN
+        --RAISE gv_weapon_duplicate;
+        raise_application_error(-20002, 'Weapon already exists');
+      END IF;
+    
+    EXCEPTION
+      WHEN no_data_found THEN
+        INSERT INTO weapon
+          (id
+          ,weapon_name
+          ,weapon_type
+          ,damage
+          ,damage_type
+          ,attack_speed
+          ,creation_time
+          ,creator_user
+          ,mod_user
+          ,mod_time
+          ,version)
+        VALUES
+          (NULL
+          ,p_weapon_name
+          ,p_weapon_type
+          ,p_damage
+          ,p_damage_type
+          ,p_attack_speed
+          ,NULL
+          ,NULL
+          ,NULL
+          ,NULL
+          ,NULL);
+         COMMIT;
+    END;
+  
+  END add_weapon;
+
+END pkg_weapon;
+/

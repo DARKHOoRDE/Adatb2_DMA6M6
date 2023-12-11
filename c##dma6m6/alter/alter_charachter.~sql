@@ -1,0 +1,16 @@
+Alter table charachter add constraint fk_charachter_player foreign key(player_id) references player(id);
+Alter table charachter add constraint fk_charachter_weapon foreign key(weapon_id) references weapon(id);
+Alter table charachter add constraint uk_name unique(charachter_name,player_id);   
+Alter table charachter add constraint ch_class Check (charachter_class IN ('Wizard','Warrior','Archer'));
+Alter table charachter modify(charachter_class not null);
+Alter table charachter modify(charachter_name not null);
+
+Comment on table charachter is 'Charachters';
+comment on column charachter.id is 'Charachter ID';     
+comment on column charachter.charachter_name is 'Charachter Name';
+comment on column charachter.player_id is 'Identifies player';
+comment on column charachter.charachter_class is 'Charachter Class';
+
+
+
+
